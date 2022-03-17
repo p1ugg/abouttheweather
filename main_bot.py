@@ -7,20 +7,21 @@ import os
 import shutil
 from random import randint
 import datetime
-
+from pprint import pprint
 
 
 def download_image(name, dir='C:/Users/paket/yandexprojects/ботяра/ImageCrawler', count_parse=3):
     crawler = GoogleImageCrawler(storage={'root_dir': dir})
-    crawler.crawl(keyword=name + ' город виды', max_num=count_parse)
+    crawler.crawl(keyword=name + 'город виды', max_num=count_parse)
     print('Фотографии по запросу', name + ' виды', 'созданы')
     upload = vk_api.VkUpload(vk)
-    rand = randint(1, 3)
-    photo_name = '00000' + str(rand)
+    photo_name = '00000' + str(randint(1, 3))
     try:
         photo = upload.photo_messages(f'{dir}/{photo_name}.jpg')
     except:
         photo = upload.photo_messages(f'{dir}/{photo_name}.png')
+
+    pprint(photo)
     owner_id = photo[0]['owner_id']
     photo_id = photo[0]['id']
     access_key = photo[0]['access_key']
@@ -150,7 +151,7 @@ def get_weat(city, cur_ccity, open_weather_token):
             f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={open_weather_token}&units=metric'
         )
         data = req.json()
-
+        pprint(data)
         cur_city = data['name']
         cur_weat = data['main']['temp']
         cur_humidity = data['main']['humidity']
